@@ -1,6 +1,6 @@
 def main():
-    x = float(input("Enter a number: "))
-    y = float(input("Enter another number: "))
+    x = float(input("Enter a number:"))
+    y = float(input("Enter another number:"))
     instruction = """
     Choose one of:
     - add (a)
@@ -10,15 +10,19 @@ def main():
     """
     operation = input(instruction)
 
-    match operation:
-        case "add" | "a":
-            return x + y
-        case "subtract" | "s":
-            return x - y
-        case "multiply" | "m":
-            return x * y
-        case "divide" | "d":
-            return x / y
+    while True:
+
+        match operation:
+            case "add" | "a":
+                return x + y
+            case "subtract" | "s":
+                return x - y
+            case "multiply" | "m":
+                return x * y
+            case "divide" | "d":
+                return x / y
+            case _:
+                operation = input("Operation invalid. "+ instruction)
 
 if __name__ == "__main__":
     print(main())
