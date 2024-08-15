@@ -1,13 +1,14 @@
+import textwrap
+
 def main():
     x = float(input("Enter a number:"))
     y = float(input("Enter another number:"))
-    instruction = """
-    Choose one of:
+    instruction = textwrap.dedent("""Choose one of:
     - add (a)
     - subtract (s)
     - multiply (m)
     - divide (d)
-    """
+        """)
     operation = input(instruction)
 
     while True:
