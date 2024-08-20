@@ -6,6 +6,7 @@ Calculate monthly payments (with interest compounded montthly) given:
 - annual percentage rate (apr)
 - loan duration
 """
+
 import locale
 
 LANG = "pt_BR"
@@ -21,13 +22,14 @@ MESSAGES = {
         "invalid_annual_percentage_rate": "{value!r} is not a valid number. Enter a valid annual percentage rate (APR):",
         "loan_duration_in_years": "Enter your loan duration (in years):",
         "invalid_loan_duration_in_years": "{value!r} is not a valid number. Enter a valid loan duration (in years):",
-        "result": "Your monthly payment is ${value:n}"
+        "result": "Your monthly payment is ${value:n}",
     },
     "pt_BR": {
         "title": "=== Calculadora Empréstimo Carros ===",
-        "result": "Sua prestação mensal é R$ {value:n}"
-    }
+        "result": "Sua prestação mensal é R$ {value:n}",
+    },
 }
+
 
 def main():
     """Ask for parameters and display results"""
@@ -35,8 +37,11 @@ def main():
     loan_amount = get_loan_amount()
     annual_percentage_rate = get_annual_percentage_rate()
     loan_duration_in_years = get_loan_duration_in_years()
-    monthly_payment = calculate_monthly_payment(loan_amount, annual_percentage_rate / 12, loan_duration_in_years * 12)
+    monthly_payment = calculate_monthly_payment(
+        loan_amount, annual_percentage_rate / 12, loan_duration_in_years * 12
+    )
     prompt("result", value=monthly_payment)
+
 
 def calculate_monthly_payment(principal, interest, duration):
     result = principal * (interest / (1 - (1 + interest) ** (-duration)))
@@ -53,6 +58,7 @@ def get_loan_amount():
 
     return float(result)
 
+
 def get_annual_percentage_rate():
     prompt("annual_percentage_rate")
     result = input()
@@ -62,6 +68,7 @@ def get_annual_percentage_rate():
         result = input()
 
     return float(result)
+
 
 def get_loan_duration_in_years():
     prompt("loan_duration_in_years")
@@ -73,12 +80,14 @@ def get_loan_duration_in_years():
 
     return float(result)
 
+
 def is_valid_number(number):
     try:
         float(number)
         return True
     except ValueError:
         return False
+
 
 def prompt(message_slug, add_prompt_symbol=True, **kwargs):
     message = get_message(message_slug, LANG)
@@ -89,10 +98,12 @@ def prompt(message_slug, add_prompt_symbol=True, **kwargs):
     else:
         print(message)
 
+
 def get_message(slug, language):
     fallback = MESSAGES["en_US"][slug]
     result = MESSAGES[language].get(slug)
     return result or fallback
+
 
 if __name__ == "__main__":
     main()
