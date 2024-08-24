@@ -25,14 +25,12 @@ def main():
         user_choice = get_user_choice()
         computer_choice = get_computer_choice()
         winner = decide_winner(user_choice, computer_choice)
-        if winner:
-            print(winner)
         if winner and winner.username == "player":
             tally["player"] += 1
+            display_winner(winner, tally)
         if winner and winner.username == "computer":
             tally["computer"] += 1
-
-    display_winner(tally)
+            display_winner(winner, tally)
 
 Play = namedtuple("Play", ["username", "choice"]) 
 
@@ -71,8 +69,8 @@ def decide_winner(playA, playB) -> Play:
 
     return playB
 
-def display_winner(winner):
-    print(winner)
+def display_winner(winner: Play, tally: dict):
+    print("%s won! (%d, %d)" % (winner.username, tally["player"], tally["computer"]))
 
 if __name__ == "__main__":
     main()
