@@ -3,28 +3,53 @@
 from collections import namedtuple
 import random
 
-CHOICES = ("rock", "paper", "scissors", "lizard", "spock")
+CHOICES = {
+    "rock": "rock",
+    "r": "rock",
+    "paper": "paper",
+    "p": "paper",
+    "scissors": "scissors",
+    "sc": "scissors",
+    "lizard": "lizard",
+    "l": "lizard",
+    "spock": "spock",
+    "sp": "spock",
+}
 
 def main():
     """
     Program entry point
     """
-    winner = None
-    while not winner:
+    tally = {"player": 0, "computer": 0}
+    while tally["player"] < 3 and tally["computer"] < 3:
         user_choice = get_user_choice()
         computer_choice = get_computer_choice()
         winner = decide_winner(user_choice, computer_choice)
-    display_winner(winner)
+        if winner:
+            print(winner)
+        if winner and winner.username == "player":
+            tally["player"] += 1
+        if winner and winner.username == "computer":
+            tally["computer"] += 1
+
+    display_winner(tally)
 
 Play = namedtuple("Play", ["username", "choice"]) 
 
 def get_user_choice() -> Play:
-    print(", ".join(CHOICES), ":", sep="")
+    message = f'Choose one of [r]ock, [p]aper, [sc]issors, [l]izard, [sp]ock:'
+    print(message)
     choice = input()
-    return Play("player", choice)
+    while is_user_choice_invalid(choice):
+        print(f"{choice} is not valid. {message}")
+        choice = input()
+    return Play("player", CHOICES[choice])
+
+def is_user_choice_invalid(choice: str):
+    return choice not in CHOICES
 
 def get_computer_choice() -> Play:
-    choice = random.choice(CHOICES)
+    choice = random.choice(list(set(CHOICES.values())))
     return Play("computer", choice)
 
 def decide_winner(playA, playB) -> Play:
