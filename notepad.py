@@ -26,7 +26,7 @@ def main():
         computer_choice = get_computer_choice()
         winner = decide_winner(user_choice, computer_choice)
         game_result = get_result_message({user_choice.choice, computer_choice.choice})
-        print(game_result)
+        prompt(game_result)
         if winner and winner.username == "player":
             tally["player"] += 1
             display_winner(winner, tally)
@@ -38,10 +38,10 @@ Play = namedtuple("Play", ["username", "choice"])
 
 def get_user_choice() -> Play:
     message = f'Choose one of [r]ock, [p]aper, [sc]issors, [l]izard, [sp]ock:'
-    print(message)
+    prompt(message)
     choice = input()
     while is_user_choice_invalid(choice):
-        print(f"{choice} is not valid. {message}")
+        prompt(f"{choice!r} is not valid. {message}")
         choice = input()
     return Play("player", CHOICES[choice])
 
@@ -72,7 +72,7 @@ def decide_winner(playA, playB) -> Play:
     return playB
 
 def display_winner(winner: Play, tally: dict):
-    print("%s won! (%d, %d)" % (winner.username, tally["player"], tally["computer"]))
+    prompt("%s won! (%d, %d)" % (winner.username, tally["player"], tally["computer"]))
 
 def get_result_message(choices):
 
@@ -98,6 +98,9 @@ def get_result_message(choices):
     return "Rock crushes Scissors"
  if choices == {"rock", "lizard"}:
     return "Rock crushes Lizard"
+
+def prompt(message):
+    print(f"==> {message}")
 
 if __name__ == "__main__":
     main()
