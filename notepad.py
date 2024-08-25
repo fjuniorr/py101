@@ -1,7 +1,16 @@
+# display scoreboard with clear screen
+# allow [h]elp for accessing game rules
+
 """Rock Paper Scissors Spock Lizard"""
 
 from collections import namedtuple
 import random
+import logging
+import time
+import os
+import textwrap
+
+logger = logging.getLogger(__name__)
 
 CHOICES = {
     "rock": "rock",
@@ -26,18 +35,24 @@ def main():
         computer_choice = get_computer_choice()
         winner = decide_winner(user_choice, computer_choice)
         game_result = get_result_message({user_choice.choice, computer_choice.choice})
-        prompt(game_result)
         if winner and winner.username == "player":
             tally["player"] += 1
-            display_winner(winner, tally)
+            display_winner(winner, game_result)
+            display_scoreboard(tally)
         if winner and winner.username == "computer":
             tally["computer"] += 1
-            display_winner(winner, tally)
+            display_winner(winner, game_result)
+            display_scoreboard(tally)
 
 Play = namedtuple("Play", ["username", "choice"]) 
 
 def get_user_choice() -> Play:
-    message = f'Choose one of [r]ock, [p]aper, [sc]issors, [l]izard, [sp]ock:'
+    message = f"""Choose one of:
+- [r]ock
+- [p]aper
+- [sc]issors
+- [l]izard
+- [sp]ock"""
     prompt(message)
     choice = input()
     while is_user_choice_invalid(choice):
@@ -60,44 +75,53 @@ def decide_winner(playA, playB) -> Play:
         return None
     if playA.choice == "rock" and playB.choice in ("scissors", "lizard"):
         return playA
-    if playA.choice == "scissors" and playB.choice == ("paper", "lizard"):
+    if playA.choice == "scissors" and playB.choice in ("paper", "lizard"):
         return playA
-    if playA.choice == "paper" and playB.choice == ("rock", "spock"):
+    if playA.choice == "paper" and playB.choice in ("rock", "spock"):
         return playA
-    if playA.choice == "spock" and playB.choice == ("scissors", "rock"):
+    if playA.choice == "spock" and playB.choice in ("scissors", "rock"):
         return playA
-    if playA.choice == "lizard" and playB.choice == ("spock", "paper"):
+    if playA.choice == "lizard" and playB.choice in ("spock", "paper"):
         return playA
 
     return playB
 
-def display_winner(winner: Play, tally: dict):
-    prompt("%s won! (%d, %d)" % (winner.username, tally["player"], tally["computer"]))
+def display_winner(winner: Play, result_message):
+    prompt("%s won! %s" % (winner.username.capitalize(), result_message))
+    print("...")
+    time.sleep(2)
+    os.system("clear")
+
+def display_scoreboard(tally):
+    horizontal_line = f"+-{'-'*26}-+"
+    print(horizontal_line)
+    print("| Player (%d) vs Computer (%d) |" % (tally["player"], tally["computer"]))
+    print(horizontal_line)
 
 def get_result_message(choices):
 
  if len(choices) == 1:
     return "Draw!"
  if choices == {"lizard", "spock"}:
-    return "Lizard poisons Spock"
+    return "Lizard poisons Spock."
  if choices == {"lizard", "paper"}:
-    return "Lizard eats Paper"
+    return "Lizard eats Paper."
  if choices == {"spock", "scissors"}:
-    return "Spock smashes Scissors"
+    return "Spock smashes Scissors."
  if choices == {"spock", "rock"}:
-    return "Spock vaporizes Rock"
+    return "Spock vaporizes Rock."
  if choices == {"paper", "rock"}:
-    return "Paper covers Rock"
+    return "Paper covers Rock."
  if choices == {"paper", "spock"}:
-    return "Paper disproves Spock"
+    return "Paper disproves Spock."
  if choices == {"scissors", "lizard"}:
-    return "Scissors decapitates Lizard"
+    return "Scissors decapitates Lizard."
  if choices == {"scissors", "paper"}:
-    return "Scissors cuts Paper"
+    return "Scissors cuts Paper."
  if choices == {"rock", "scissors"}:
-    return "Rock crushes Scissors"
+    return "Rock crushes Scissors."
  if choices == {"rock", "lizard"}:
-    return "Rock crushes Lizard"
+    return "Rock crushes Lizard."
 
 def prompt(message):
     print(f"==> {message}")
