@@ -25,6 +25,8 @@ def main():
         user_choice = get_user_choice()
         computer_choice = get_computer_choice()
         winner = decide_winner(user_choice, computer_choice)
+        game_result = get_result_message({user_choice.choice, computer_choice.choice})
+        print(game_result)
         if winner and winner.username == "player":
             tally["player"] += 1
             display_winner(winner, tally)
@@ -71,6 +73,31 @@ def decide_winner(playA, playB) -> Play:
 
 def display_winner(winner: Play, tally: dict):
     print("%s won! (%d, %d)" % (winner.username, tally["player"], tally["computer"]))
+
+def get_result_message(choices):
+
+ if len(choices) == 1:
+    return "Draw!"
+ if choices == {"lizard", "spock"}:
+    return "Lizard poisons Spock"
+ if choices == {"lizard", "paper"}:
+    return "Lizard eats Paper"
+ if choices == {"spock", "scissors"}:
+    return "Spock smashes Scissors"
+ if choices == {"spock", "rock"}:
+    return "Spock vaporizes Rock"
+ if choices == {"paper", "rock"}:
+    return "Paper covers Rock"
+ if choices == {"paper", "spock"}:
+    return "Paper disproves Spock"
+ if choices == {"scissors", "lizard"}:
+    return "Scissors decapitates Lizard"
+ if choices == {"scissors", "paper"}:
+    return "Scissors cuts Paper"
+ if choices == {"rock", "scissors"}:
+    return "Rock crushes Scissors"
+ if choices == {"rock", "lizard"}:
+    return "Rock crushes Lizard"
 
 if __name__ == "__main__":
     main()
