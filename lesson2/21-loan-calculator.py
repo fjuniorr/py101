@@ -10,36 +10,14 @@ Calculate monthly payments (with interest compounded monthly) given:
 import locale
 import re
 import os
+import json
 
 locale.setlocale(locale.LC_ALL, "")
 # locale.setlocale(locale.LC_ALL, "pt_BR.utf-8") # for testing
 LANG, _ = locale.getlocale()
 
-MESSAGES = {
-    "en_US": {
-        "title": "=== Car Loan Calculator ===",
-        "keep_going": "Simulate again? Yes/No",
-        "loan_amount": "Enter a loan amount:",
-        "invalid_loan_amount": "{value!r} is not valid. Enter a valid loan amount:",
-        "annual_percentage_rate": "Enter your annual percentage rate (eg. 10.5%):",
-        "invalid_annual_percentage_rate": "{value!r} is not valid. Enter a valid annual percentage rate (eg. 10.5%):",
-        "loan_duration_in_yearmonth": "Enter your loan duration (eg. 2y; 1.5y; 1y2m; 10m):",
-        "invalid_loan_duration_in_yearmonth": "{value!r} is not valid. Enter a valid loan duration (eg. 2y; 1.5y; 1y2m; 10m):",
-        "result": "Your monthly payment is {value}",
-    },
-    "pt_BR": {
-        "title": "=== Calculadora Empréstimo Carros ===",
-        "keep_going": "Simular Novamente? Yes/No",
-        "loan_amount": "Digite o valor do seu empréstimo:",
-        "invalid_loan_amount": "{value!r} não é válido. Digite um valor válido de empréstimo:",
-        "annual_percentage_rate": "Digite a sua taxa de juros anual (eg. 10.5%):",
-        "invalid_annual_percentage_rate": "{value!r} não é válido. Digite a sua taxa de juros anual (eg. 10.5%):",
-        "loan_duration_in_yearmonth": "Digite a duração do seu empréstimo (eg. 2y; 1.5y; 1y2m; 10m):",
-        "invalid_loan_duration_in_yearmonth": "{value!r} não é válido. Digite uma duração válida do seu empréstimo (eg. 2y; 1.5y; 1y2m; 10m):",
-        "result": "Sua prestação mensal é {value}",
-    },
-}
-
+with open("lesson2/21-loan-calculator.json") as fs:
+    MESSAGES = json.load(fs)
 
 def main():
     """Ask for user parameters and display results (possibly multiple times)"""
