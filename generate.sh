@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DIR="exercises/ch3-easy3"
-N=10
+DIR="lesson3/hard1"
+N=5
 
 if [ ! -d "$DIR" ]; then
   mkdir $DIR
